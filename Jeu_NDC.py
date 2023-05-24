@@ -1,11 +1,15 @@
 import pyxel, random
 
-
-
 T_OBS = (2,1)
 T_ESP = (2,4)
+<<<<<<< HEAD
 TRANSPARENT_COLOR = 5
 
+=======
+T_M = (2,2)
+T_A = (2,3)
+TRANSPARENT = 5
+>>>>>>> 507ebd4f35d187825c72c92dd0f6d1e9dc1793a7
 
 class Jeu:
     def __init__(self):
@@ -15,7 +19,13 @@ class Jeu:
         self.player_x = 60
         self.player_y = 100
         self.pas = 0
+<<<<<<< HEAD
         pyxel.blt(self.player_x, self.player_y, 0, 0, 0, 8, 8, TRANSPARENT_COLOR)
+=======
+        self.vie = 1
+        self.scroll_y = 1080
+        pyxel.blt(self.player_x, self.player_y, 0, 0, 0, 8, 8, TRANSPARENT)
+>>>>>>> 507ebd4f35d187825c72c92dd0f6d1e9dc1793a7
         self.obstacles = []
 
         pyxel.run(self.update, self.draw)
@@ -35,6 +45,7 @@ class Jeu:
         
     def draw(self) :
         pyxel.cls(0)
+<<<<<<< HEAD
         pyxel.blt(self.player_x, self.player_y, 0, 122, 12, 6, 8, TRANSPARENT_COLOR)
         self.obstacles_creation()
         self.obstacles_sup()
@@ -43,6 +54,20 @@ class Jeu:
         # obstacles
         for o in self.obstacles:
             pyxel.blt(o[0], o[1], 0, 130, 65, 7, 7, TRANSPARENT_COLOR)
+=======
+        if self.vie == 1:
+            pyxel.blt(self.player_x, self.player_y, 0, 122, 12, 6, 8, TRANSPARENT)
+            self.obstacles_creation()
+            self.obstacles_sup()
+            pyxel.text(5,120, 'PAS:'+ str(pyxel.ceil(self.pas)), 7)
+            
+            # obstacles
+            for o in self.obstacles:
+                pyxel.blt(o[0], o[1], 0, 130, 64, 8, 8, TRANSPARENT)
+        else:
+            pyxel.camera(0, self.scroll_y)
+            pyxel.text(50,64+self.scroll_y, 'GAME OVER', 7)
+>>>>>>> 507ebd4f35d187825c72c92dd0f6d1e9dc1793a7
 
     def vaisseau_deplacement(self):
         """déplacement du personnage"""
@@ -58,7 +83,6 @@ class Jeu:
     def compteur_de_pas(self) :
         if pyxel.btn(pyxel.KEY_UP) and self.player_y > 0 :
             self.pas += 0.1
-
     
     def obstacles_creation(self):
         if (pyxel.frame_count % 80 == 0):
@@ -74,5 +98,39 @@ class Jeu:
         for o in self.obstacles:
             if o[0] <= self.player_x+8 and o[1] <= self.player_y+8 >= self.player_x and o[1]+8 >= self.player_y:
                 self.obstacles.remove(o)
+                self.vie = 0
+
+    def scroll(self):
+        if self.scroll_y>0:
+            self.scroll_y -= 1
+        else :
+            self.scroll_y =1080
+        self.appa_obs(self.scroll_y,self.scroll_y+1)
+
+    def appa_obs(self,y1, y2):
+         yt1 = pyxel.floor(y1 / 8)
+         yt2 = pyxel.ceil(y2 / 8)
+         
+         for y in range(yt1, yt2 + 1):
+             for x in range(16):
+                 t = pyxel.tilemap(0).pget(x, y)
+                 if t == T_M:
+                     pyxel.tilemap(0).pset(x, y, T_ESP)
+                     self.obstacles.append([x*8,y*8-y1])
+
+    def detect_coll(self):
+        y = self.player_y+self.scroll_y
+        x1 = self.player_x // 8
+        y1 = y // 8
+        x2 = (self.player_x + 8 - 1) // 8
+        y2 = (y + 8 - 1) // 8
+        for yi in range(y1, y2 + 1):
+            for xi in range(x1, x2 + 1):
+                t = pyxel.tilemap(0).pget(xi, yi)
+                if t == T_A:
+                    self.vie -= 1
+                    pyxel.tilemap(0).pset(xi, yi, T_ESP)
+                    self.obstacles_creation(xi*8, self.player_y)
+                    return xi*8, yi*8
 
 Jeu()
