@@ -2,14 +2,7 @@ import pyxel, random
 
 T_OBS = (2,1)
 T_ESP = (2,4)
-<<<<<<< HEAD
 TRANSPARENT_COLOR = 5
-
-=======
-T_M = (2,2)
-T_A = (2,3)
-TRANSPARENT = 5
->>>>>>> 507ebd4f35d187825c72c92dd0f6d1e9dc1793a7
 
 class Jeu:
     def __init__(self):
@@ -19,13 +12,9 @@ class Jeu:
         self.player_x = 60
         self.player_y = 100
         self.pas = 0
-<<<<<<< HEAD
         pyxel.blt(self.player_x, self.player_y, 0, 0, 0, 8, 8, TRANSPARENT_COLOR)
-=======
         self.vie = 1
         self.scroll_y = 1080
-        pyxel.blt(self.player_x, self.player_y, 0, 0, 0, 8, 8, TRANSPARENT)
->>>>>>> 507ebd4f35d187825c72c92dd0f6d1e9dc1793a7
         self.obstacles = []
 
         pyxel.run(self.update, self.draw)
@@ -36,6 +25,8 @@ class Jeu:
 
         if self.player_y <= 115 :
             self.player_y += 0.5
+        if self.player_y == 118 :
+            self.vie = 0
 
         self.vaisseau_deplacement()
         self.compteur_de_pas()
@@ -45,29 +36,20 @@ class Jeu:
         
     def draw(self) :
         pyxel.cls(0)
-<<<<<<< HEAD
-        pyxel.blt(self.player_x, self.player_y, 0, 122, 12, 6, 8, TRANSPARENT_COLOR)
-        self.obstacles_creation()
-        self.obstacles_sup()
-        pyxel.text(5,120, 'PAS:'+ str(pyxel.ceil(self.pas)), 7)
-        
-        # obstacles
-        for o in self.obstacles:
-            pyxel.blt(o[0], o[1], 0, 130, 65, 7, 7, TRANSPARENT_COLOR)
-=======
+
         if self.vie == 1:
-            pyxel.blt(self.player_x, self.player_y, 0, 122, 12, 6, 8, TRANSPARENT)
+            pyxel.blt(self.player_x, self.player_y, 0, 122, 12, 6, 8, TRANSPARENT_COLOR)
             self.obstacles_creation()
             self.obstacles_sup()
             pyxel.text(5,120, 'PAS:'+ str(pyxel.ceil(self.pas)), 7)
             
             # obstacles
             for o in self.obstacles:
-                pyxel.blt(o[0], o[1], 0, 130, 64, 8, 8, TRANSPARENT)
+                pyxel.blt(o[0], o[1], 0, 130, 64, 8, 8, TRANSPARENT_COLOR)
         else:
             pyxel.camera(0, self.scroll_y)
             pyxel.text(50,64+self.scroll_y, 'GAME OVER', 7)
->>>>>>> 507ebd4f35d187825c72c92dd0f6d1e9dc1793a7
+
 
     def vaisseau_deplacement(self):
         """déplacement du personnage"""
