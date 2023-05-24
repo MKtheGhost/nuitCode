@@ -16,20 +16,13 @@ class Jeu:
     def draw(self) :
         pyxel.cls(0)
         pyxel.rect(60, 0, 8, 8, 9)
-        
- 
 
-    def draw():
-        pyxel.cls
-
-    def update(self):
-        pass
 
 class Perso :
-    def __init__(self,x, y) :
-        self.player_img = pyxel.blt(121, 11, 0, 6, 8)
-        self.player_x = x
-        self.player_y = y
+    def __init__(x, y) :
+        player_img = pyxel.blt(121, 11, 0, 6, 8)
+        player_x = x
+        player_y = y
 
     def vaisseau_deplacement(x, y):
 
@@ -46,7 +39,5 @@ class Perso :
             if (y > 0) :
                 y = y - 1
         return x, y
-
-#pyxel.load(filename="images.pyxres")
-
+        
 Jeu()
