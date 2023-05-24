@@ -4,6 +4,7 @@ import pyxel, random
 
 T_OBS = (2,1)
 T_ESP = (2,4)
+TRANSPARENT_COLOR = 5
 
 
 class Jeu:
@@ -14,7 +15,7 @@ class Jeu:
         self.player_x = 60
         self.player_y = 100
         self.pas = 0
-        pyxel.blt(self.player_x, self.player_y, 0, 0, 0, 8, 8)
+        pyxel.blt(self.player_x, self.player_y, 0, 0, 0, 8, 8, TRANSPARENT_COLOR)
         self.obstacles = []
 
         pyxel.run(self.update, self.draw)
@@ -34,14 +35,14 @@ class Jeu:
         
     def draw(self) :
         pyxel.cls(0)
-        pyxel.blt(self.player_x, self.player_y, 0, 122, 12, 6, 8)
+        pyxel.blt(self.player_x, self.player_y, 0, 122, 12, 6, 8, TRANSPARENT_COLOR)
         self.obstacles_creation()
         self.obstacles_sup()
         pyxel.text(5,120, 'PAS:'+ str(pyxel.ceil(self.pas)), 7)
         
         # obstacles
         for o in self.obstacles:
-            pyxel.blt(o[0], o[1], 0, 130, 64, 8, 8)
+            pyxel.blt(o[0], o[1], 0, 130, 65, 7, 7, TRANSPARENT_COLOR)
 
     def vaisseau_deplacement(self):
         """déplacement du personnage"""
