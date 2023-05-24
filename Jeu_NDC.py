@@ -6,6 +6,7 @@ class Jeu:
         self.score = 100
         self.vies = 3
         
+        pyxel.load(filename = "images.pyxres")
 
 
 #initialisation du Jeu
