@@ -1,8 +1,9 @@
 import pyxel, random
 
 
+
 T_OBS = (2,1)
-T_ESC = (2,4)
+T_ESP = (2,4)
 
 
 class Jeu:
@@ -14,8 +15,6 @@ class Jeu:
         self.player_y = 100
         self.pas = 0
         pyxel.blt(self.player_x, self.player_y, 0, 0, 0, 8, 8)
-
-        self.player_y = 110
         self.obstacles = []
 
         pyxel.run(self.update, self.draw)
@@ -26,12 +25,14 @@ class Jeu:
 
         self.vaisseau_deplacement()
         self.compteur_de_pas()
+        self.obstacles_creation()
+        self.obstacles_sup()
+        self.obstacles_dep()
+        self.apparition_obst()
         
     def draw(self) :
         pyxel.cls(0)
-        #pyxel.rect(self.player_x, self.player_y, 8, 8, 9)
         pyxel.blt(self.player_x, self.player_y, 0, 122, 12, 6, 8)
-
         self.obstacles_creation()
         self.obstacles_sup()
         pyxel.text(5,120, 'PAS:'+ str(pyxel.ceil(self.pas)), 7)
@@ -39,7 +40,6 @@ class Jeu:
         # obstacles
         for o in self.obstacles:
             pyxel.blt(o[0], o[1], 0, 0, 8, 8, 8)
-
 
     def vaisseau_deplacement(self):
         """déplacement du personnage"""
@@ -52,19 +52,20 @@ class Jeu:
         if pyxel.btn(pyxel.KEY_UP) and self.player_y>0:
             self.player_y -= 1
 
-
-
     def compteur_de_pas(self) :
         if pyxel.btn(pyxel.KEY_UP) and self.player_y > 0 :
             self.pas += 0.1
 
-
-
-
     
     def obstacles_creation(self):
-        if (pyxel.frame_count % 30 == 0):
+        if (pyxel.frame_count % 80 == 0):
             self.obstacles.append([random.randint(0, 120), 0])
+
+    def obstacles_dep(self):
+        for o in self.obstacles:
+            o[1] += 1
+            if  o[1]>128:
+                self.obstacles.remove(o)
 
     def obstacles_sup(self):
         for o in self.obstacles:
