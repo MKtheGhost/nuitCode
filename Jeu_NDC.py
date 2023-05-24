@@ -3,7 +3,8 @@ import pyxel, random
 T_OBS = (2,1)
 T_ESP = (2,4)
 T_M = (2,2)
-
+T_A = (2,3)
+TRANSPARENT = 5
 
 class Jeu:
     def __init__(self):
@@ -15,7 +16,7 @@ class Jeu:
         self.pas = 0
         self.vie = 1
         self.scroll_y = 1080
-        pyxel.blt(self.player_x, self.player_y, 0, 0, 0, 8, 8)
+        pyxel.blt(self.player_x, self.player_y, 0, 0, 0, 8, 8, TRANSPARENT)
         self.obstacles = []
 
         pyxel.run(self.update, self.draw)
@@ -35,14 +36,18 @@ class Jeu:
         
     def draw(self) :
         pyxel.cls(0)
-        pyxel.blt(self.player_x, self.player_y, 0, 122, 12, 6, 8)
-        self.obstacles_creation()
-        self.obstacles_sup()
-        pyxel.text(5,120, 'PAS:'+ str(pyxel.ceil(self.pas)), 7)
-        
-        # obstacles
-        for o in self.obstacles:
-            pyxel.blt(o[0], o[1], 0, 130, 64, 8, 8)
+        if self.vie == 1:
+            pyxel.blt(self.player_x, self.player_y, 0, 122, 12, 6, 8, TRANSPARENT)
+            self.obstacles_creation()
+            self.obstacles_sup()
+            pyxel.text(5,120, 'PAS:'+ str(pyxel.ceil(self.pas)), 7)
+            
+            # obstacles
+            for o in self.obstacles:
+                pyxel.blt(o[0], o[1], 0, 130, 64, 8, 8, TRANSPARENT)
+        else:
+            pyxel.camera(0, self.scroll_y)
+            pyxel.text(50,64+self.scroll_y, 'GAME OVER', 7)
 
     def vaisseau_deplacement(self):
         """déplacement du personnage"""
@@ -73,6 +78,7 @@ class Jeu:
         for o in self.obstacles:
             if o[0] <= self.player_x+8 and o[1] <= self.player_y+8 >= self.player_x and o[1]+8 >= self.player_y:
                 self.obstacles.remove(o)
+                self.vie = 0
 
     def scroll(self):
         if self.scroll_y>0:
@@ -91,5 +97,20 @@ class Jeu:
                  if t == T_M:
                      pyxel.tilemap(0).pset(x, y, T_ESP)
                      self.obstacles.append([x*8,y*8-y1])
+
+    def detect_coll(self):
+        y = self.player_y+self.scroll_y
+        x1 = self.player_x // 8
+        y1 = y // 8
+        x2 = (self.player_x + 8 - 1) // 8
+        y2 = (y + 8 - 1) // 8
+        for yi in range(y1, y2 + 1):
+            for xi in range(x1, x2 + 1):
+                t = pyxel.tilemap(0).pget(xi, yi)
+                if t == T_A:
+                    self.vie -= 1
+                    pyxel.tilemap(0).pset(xi, yi, T_ESP)
+                    self.obstacles_creation(xi*8, self.player_y)
+                    return xi*8, yi*8
 
 Jeu()
