@@ -1,9 +1,8 @@
 import pyxel, random
 
-
-
 T_OBS = (2,1)
 T_ESP = (2,4)
+T_M = (2,2)
 
 
 class Jeu:
@@ -14,6 +13,8 @@ class Jeu:
         self.player_x = 60
         self.player_y = 100
         self.pas = 0
+        self.vie = 1
+        self.scroll_y = 1080
         pyxel.blt(self.player_x, self.player_y, 0, 0, 0, 8, 8)
         self.obstacles = []
 
@@ -57,7 +58,6 @@ class Jeu:
     def compteur_de_pas(self) :
         if pyxel.btn(pyxel.KEY_UP) and self.player_y > 0 :
             self.pas += 0.1
-
     
     def obstacles_creation(self):
         if (pyxel.frame_count % 80 == 0):
@@ -73,5 +73,23 @@ class Jeu:
         for o in self.obstacles:
             if o[0] <= self.player_x+8 and o[1] <= self.player_y+8 >= self.player_x and o[1]+8 >= self.player_y:
                 self.obstacles.remove(o)
+
+    def scroll(self):
+        if self.scroll_y>0:
+            self.scroll_y -= 1
+        else :
+            self.scroll_y =1080
+        self.appa_obs(self.scroll_y,self.scroll_y+1)
+
+    def appa_obs(self,y1, y2):
+         yt1 = pyxel.floor(y1 / 8)
+         yt2 = pyxel.ceil(y2 / 8)
+         
+         for y in range(yt1, yt2 + 1):
+             for x in range(16):
+                 t = pyxel.tilemap(0).pget(x, y)
+                 if t == T_M:
+                     pyxel.tilemap(0).pset(x, y, T_ESP)
+                     self.obstacles.append([x*8,y*8-y1])
 
 Jeu()
