@@ -2,7 +2,10 @@ import pyxel, random
 
 T_OBS = (2,1)
 T_ESP = (2,4)
-TRANSPARENT_COLOR = 5
+
+T_M = (2,2)
+T_A = (2,3)
+TRANSPARENT = 5
 
 class Jeu:
     def __init__(self):
@@ -12,9 +15,10 @@ class Jeu:
         self.player_x = 60
         self.player_y = 100
         self.pas = 0
-        pyxel.blt(self.player_x, self.player_y, 0, 0, 0, 8, 8, TRANSPARENT_COLOR)
+
         self.vie = 1
         self.scroll_y = 1080
+        pyxel.blt(self.player_x, self.player_y, 0, 0, 0, 8, 8, TRANSPARENT)
         self.obstacles = []
 
         pyxel.run(self.update, self.draw)
@@ -38,17 +42,21 @@ class Jeu:
         pyxel.cls(0)
 
         if self.vie == 1:
-            pyxel.blt(self.player_x, self.player_y, 0, 122, 12, 6, 8, TRANSPARENT_COLOR)
+            pyxel.camera
+            pyxel.bltm(0, 0, 0, 192, (self.scroll_y // 4) % 28, 28, 28)
+            pyxel.bltm(0, 0, 0, 0, self.scroll_y,  128, 128, TRANSPARENT)
+            pyxel.blt(self.player_x, self.player_y, 0, 122, 12, 6, 8, TRANSPARENT)
             self.obstacles_creation()
             self.obstacles_sup()
             pyxel.text(5,120, 'PAS:'+ str(pyxel.ceil(self.pas)), 7)
             
             # obstacles
             for o in self.obstacles:
-                pyxel.blt(o[0], o[1], 0, 130, 64, 8, 8, TRANSPARENT_COLOR)
+                pyxel.blt(o[0], o[1], 0, 130, 64, 8, 8, TRANSPARENT)
         else:
             pyxel.camera(0, self.scroll_y)
             pyxel.text(50,64+self.scroll_y, 'GAME OVER', 7)
+
 
 
     def vaisseau_deplacement(self):
