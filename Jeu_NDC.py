@@ -13,8 +13,9 @@ class Jeu:
         pyxel.load(filename = "images.pyxres")
         self.x = 0
         self.player_x = 60
-        self.player_y = 100
+        self.player_y = 80
         self.pas = 0
+        self.start = False
 
         self.vie = 1
         self.scroll_y = 1080
@@ -27,17 +28,23 @@ class Jeu:
         if pyxel.btnp(pyxel.KEY_Q) :
             pyxel.quit()
 
-        if self.player_y <= 115 :
-            self.player_y += 0.5
-        if self.player_y == 115 :
-            self.vie = 0
+        if pyxel.btnp(pyxel.KEY_SPACE)  :
+            self.start = not self.start
 
-        self.vaisseau_deplacement()
-        self.compteur_de_pas()
-        self.obstacles_creation()
-        self.obstacles_sup()
-        self.obstacles_dep()
-        
+        if self.start :
+
+            if self.player_y <= 115 :
+                self.player_y += 0.5
+            if self.player_y == 115 :
+                self.vie = 0
+
+            self.vaisseau_deplacement()
+            self.compteur_de_pas()
+            self.obstacles_creation()
+            #self.obstacles_sup()
+            self.obstacles_dep()
+            self.detect_coll()
+            
     def draw(self) :
         pyxel.cls(0)
 
@@ -47,7 +54,7 @@ class Jeu:
             pyxel.bltm(0, 0, 0, 0, self.scroll_y,  128, 128, TRANSPARENT)
             pyxel.blt(self.player_x, self.player_y, 0, 122, 12, 6, 8, TRANSPARENT)
             self.obstacles_creation()
-            self.obstacles_sup()
+            #self.obstacles_sup()
             pyxel.text(5,120, 'PAS:'+ str(pyxel.ceil(self.pas)), 7)
             
             # obstacles
@@ -83,13 +90,13 @@ class Jeu:
             o[1] += 1
             if  o[1]>128:
                 self.obstacles.remove(o)
-
-    def obstacles_sup(self):
-        for o in self.obstacles:
-            if o[0] <= self.player_x+8 and o[1] <= self.player_y+8 >= self.player_x and o[1]+8 >= self.player_y:
-                self.obstacles.remove(o)
-                self.vie = 0
-
+    """
+        def obstacles_sup(self):
+            for o in self.obstacles:
+                if o[0] <= self.player_x+8 and o[1] <= self.player_y+8 >= self.player_x and o[1]+8 >= self.player_y:
+                    self.obstacles.remove(o)
+                    self.vie = 0
+    """
     def scroll(self):
         if self.scroll_y>0:
             self.scroll_y -= 1
@@ -107,7 +114,7 @@ class Jeu:
                  if t == T_M:
                      pyxel.tilemap(0).pset(x, y, T_ESP)
                      self.obstacles.append([x*8,y*8-y1])
-
+    """
     def detect_coll(self):
         y = self.player_y+self.scroll_y
         x1 = self.player_x // 8
@@ -120,7 +127,20 @@ class Jeu:
                 if t == T_A:
                     self.vie -= 1
                     pyxel.tilemap(0).pset(xi, yi, T_ESP)
-                    self.obstacles_creation(xi*8, self.player_y)
+                    #self.obstacles_creation(xi*8, self.player_y)
                     return xi*8, yi*8
+    """
+    def detect_coll(self):
+        for elt in self.obstacles : 
+            dx = (elt[0] - self.player_x)**2
+            dy = (elt[1] - self.player_y)**2
+
+            if (dx < 64) and (dy < 64) :
+                self.vie = 0
+                break
+      
+
+
+
 
 Jeu()
