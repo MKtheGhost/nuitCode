@@ -1,7 +1,7 @@
 import pyxel, random
 
 T_OBS = (2,1)
-T_ESC = (2,4)
+T_ESP = (2,4)
 
 class Jeu:
     def __init__(self):
@@ -19,6 +19,7 @@ class Jeu:
         self.vaisseau_deplacement()
         self.obstacles_creation()
         self.obstacles_sup()
+        self.obstacles_dep()
         
     def draw(self) :
         pyxel.cls(0)
@@ -39,8 +40,14 @@ class Jeu:
             self.player_y -= 1
     
     def obstacles_creation(self):
-        if (pyxel.frame_count % 30 == 0):
+        if (pyxel.frame_count % 80 == 0):
             self.obstacles.append([random.randint(0, 120), 0])
+
+    def obstacles_dep(self):
+        for o in self.obstacles:
+            o[1] += 1
+            if  o[1]>128:
+                self.obstacles.remove(o)
 
     def obstacles_sup(self):
         for o in self.obstacles:
