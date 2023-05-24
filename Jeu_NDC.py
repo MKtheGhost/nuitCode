@@ -8,11 +8,11 @@ class Jeu:
         
 
 
-initialisation du Jeu
-mouvement perso
-environnement
-obstacles / bâteaux
-compteur de pas
-collision
-ecran défaite/victoire
+#initialisation du Jeu
+#mouvement perso
+#environnement
+#obstacles / bâteaux
+#compteur de pas
+#collision
+#ecran défaite/victoire
 
