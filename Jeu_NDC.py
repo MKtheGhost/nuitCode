@@ -29,7 +29,7 @@ class Jeu:
 
         if self.player_y <= 115 :
             self.player_y += 0.5
-        if self.player_y == 118 :
+        if self.player_y == 115 :
             self.vie = 0
 
         self.vaisseau_deplacement()
@@ -43,7 +43,7 @@ class Jeu:
 
         if self.vie == 1:
             pyxel.camera
-            pyxel.bltm(0, 0, 0, 192, (self.scroll_y // 4) % 28, 28, 28)
+            pyxel.bltm(0, 0, 0, 192, (self.scroll_y // 4) % 128, 128, 128)
             pyxel.bltm(0, 0, 0, 0, self.scroll_y,  128, 128, TRANSPARENT)
             pyxel.blt(self.player_x, self.player_y, 0, 122, 12, 6, 8, TRANSPARENT)
             self.obstacles_creation()
