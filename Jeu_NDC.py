@@ -32,31 +32,31 @@ class Jeu:
         if self.player_y == 115 :
             self.vie = 0
 
-
         self.vaisseau_deplacement()
         self.compteur_de_pas()
         self.obstacles_creation()
         self.obstacles_sup()
         self.obstacles_dep()
-
+        
     def draw(self) :
         pyxel.cls(0)
 
         if self.vie == 1:
             pyxel.camera
-            pyxel.bltm(0, 0, 0, 200, (self.scroll_y // 4) % 128, 128, 128)
-            pyxel.bltm(0, 0, 0, 255, self.scroll_y,  128, 128, TRANSPARENT)
+            pyxel.bltm(0, 0, 0, 192, (self.scroll_y // 4) % 28, 28, 28)
+            pyxel.bltm(0, 0, 0, 0, self.scroll_y,  128, 128, TRANSPARENT)
             pyxel.blt(self.player_x, self.player_y, 0, 122, 12, 6, 8, TRANSPARENT)
             self.obstacles_creation()
             self.obstacles_sup()
             pyxel.text(5,120, 'PAS:'+ str(pyxel.ceil(self.pas)), 7)
-
+            
             # obstacles
             for o in self.obstacles:
                 pyxel.blt(o[0], o[1], 0, 130, 64, 8, 8, TRANSPARENT)
         else:
             pyxel.camera(0, self.scroll_y)
             pyxel.text(50,64+self.scroll_y, 'GAME OVER', 7)
+
 
 
     def vaisseau_deplacement(self):
@@ -73,7 +73,7 @@ class Jeu:
     def compteur_de_pas(self) :
         if pyxel.btn(pyxel.KEY_UP) and self.player_y > 0 :
             self.pas += 0.1
-
+    
     def obstacles_creation(self):
         if (pyxel.frame_count % 80 == 0):
             self.obstacles.append([random.randint(0, 120), 0])
@@ -90,8 +90,6 @@ class Jeu:
                 self.obstacles.remove(o)
                 self.vie = 0
 
-
-
     def scroll(self):
         if self.scroll_y>0:
             self.scroll_y -= 1
@@ -102,7 +100,7 @@ class Jeu:
     def appa_obs(self,y1, y2):
          yt1 = pyxel.floor(y1 / 8)
          yt2 = pyxel.ceil(y2 / 8)
-
+         
          for y in range(yt1, yt2 + 1):
              for x in range(16):
                  t = pyxel.tilemap(0).pget(x, y)
