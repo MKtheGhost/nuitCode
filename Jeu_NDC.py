@@ -7,7 +7,7 @@ class Jeu:
         self.x = 0
         self.player_x = 60
         self.player_y = 60
-        self.player_img = pyxel.blt(self.player_x, self.player_y, 0, 0, 0, 8, 8)
+        pyxel.blt(self.player_x, self.player_y, 0, 0, 0, 8, 8)
         pyxel.run(self.update, self.draw)
 
     def update(self) :
