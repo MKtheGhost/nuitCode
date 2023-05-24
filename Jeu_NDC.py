@@ -29,7 +29,7 @@ class Jeu:
 
         if self.player_y <= 115 :
             self.player_y += 0.5
-        if self.player_y == 118 :
+        if self.player_y == 115 :
             self.vie = 0
 
         self.vaisseau_deplacement()
