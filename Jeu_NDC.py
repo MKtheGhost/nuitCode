@@ -23,6 +23,9 @@ class Jeu:
         if pyxel.btnp(pyxel.KEY_Q) :
             pyxel.quit()
 
+        if self.player_y <= 115 :
+            self.player_y += 0.5
+
         self.vaisseau_deplacement()
         self.compteur_de_pas()
         self.obstacles_creation()
@@ -38,7 +41,7 @@ class Jeu:
         
         # obstacles
         for o in self.obstacles:
-            pyxel.blt(o[0], o[1], 0, 0, 8, 8, 8)
+            pyxel.blt(o[0], o[1], 0, 130, 64, 8, 8)
 
     def vaisseau_deplacement(self):
         """déplacement du personnage"""
