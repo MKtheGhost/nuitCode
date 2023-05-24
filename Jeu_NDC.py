@@ -16,6 +16,7 @@ class Jeu:
         self.player_y = 80
         self.pas = 0
         self.start = False
+        self.fond = 1920
 
         self.vie = 1
         self.scroll_y = 1080
@@ -31,7 +32,10 @@ class Jeu:
         if pyxel.btnp(pyxel.KEY_SPACE)  :
             self.start = not self.start
 
+
         if self.start :
+            pyxel.bltm(0, 0, 0, 0, self.fond, 128, 128)
+            self.fond -= 1
 
             if self.player_y <= 115 :
                 self.player_y += 0.5
@@ -50,7 +54,8 @@ class Jeu:
 
         if self.vie == 1:
             pyxel.camera
-            pyxel.bltm(0, 0, 0, 192, (self.scroll_y // 4) % 128, 128, 128)
+            pyxel.bltm(0, 0, 0, 0, self.fond, 128, 128)
+           # self.fond -= 1
             pyxel.bltm(0, 0, 0, 0, self.scroll_y,  128, 128, TRANSPARENT)
             pyxel.blt(self.player_x, self.player_y, 0, 122, 12, 6, 8, TRANSPARENT)
             self.obstacles_creation()
@@ -87,7 +92,7 @@ class Jeu:
 
     def obstacles_dep(self):
         for o in self.obstacles:
-            o[1] += 1
+            o[1] += 2
             if  o[1]>128:
                 self.obstacles.remove(o)
     """
@@ -114,22 +119,7 @@ class Jeu:
                  if t == T_M:
                      pyxel.tilemap(0).pset(x, y, T_ESP)
                      self.obstacles.append([x*8,y*8-y1])
-    """
-    def detect_coll(self):
-        y = self.player_y+self.scroll_y
-        x1 = self.player_x // 8
-        y1 = y // 8
-        x2 = (self.player_x + 8 - 1) // 8
-        y2 = (y + 8 - 1) // 8
-        for yi in range(y1, y2 + 1):
-            for xi in range(x1, x2 + 1):
-                t = pyxel.tilemap(0).pget(xi, yi)
-                if t == T_A:
-                    self.vie -= 1
-                    pyxel.tilemap(0).pset(xi, yi, T_ESP)
-                    #self.obstacles_creation(xi*8, self.player_y)
-                    return xi*8, yi*8
-    """
+
     def detect_coll(self):
         for elt in self.obstacles : 
             dx = (elt[0] - self.player_x)**2
