@@ -28,7 +28,6 @@ class Jeu:
         self.obstacles_creation()
         self.obstacles_sup()
         self.obstacles_dep()
-        self.apparition_obst()
         
     def draw(self) :
         pyxel.cls(0)
@@ -71,17 +70,5 @@ class Jeu:
         for o in self.obstacles:
             if o[0] <= self.player_x+8 and o[1] <= self.player_y+8 >= self.player_x and o[1]+8 >= self.player_y:
                 self.obstacles.remove(o)
-
-    def apparition_obst(self, y1, y2):
-        yt1 = pyxel(y1 / 8)
-        yt2 = pyxel(y2 / 8)
-
-        for y in range(yt1, yt2 + 1):
-            for x in range(16):
-                t = pyxel.tilemap(0).pget(x, y)
-                if t == T_OBS:
-                    pyxel.tilemap(0).pset(x, y, T_ESP)
-                    self.obstacles.append([x*8, y*8-y1])
-
 
 Jeu()
