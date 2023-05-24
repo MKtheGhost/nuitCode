@@ -1,9 +1,8 @@
 import pyxel, random
 
-#test
-
 class Jeu:
     def __init__(self):
+
         pyxel.init(128, 128, title="Nuit du Code", fps = 60)
         pyxel.run(self.update, self.draw)
         pyxel.load(filename = "images.pyxres")
@@ -20,6 +19,11 @@ class Jeu:
         
  
 
+    def draw():
+        pyxel.cls
+
+    def update(self):
+        pass
 
 class Perso :
     def __init__(self,x, y) :
