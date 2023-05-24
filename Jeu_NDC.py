@@ -37,6 +37,10 @@ class Jeu:
     def draw(self) :
         pyxel.cls(0)
         if self.vie == 1:
+            pyxel.camera
+            pyxel.bltm(0, 0, 0, 192, (self.scroll_y // 4) % 128, 128, 128)
+            pyxel.bltm(0, 0, 0, 0, self.scroll_y,  128, 128, TRANSPARENT)
+
             pyxel.blt(self.player_x, self.player_y, 0, 122, 12, 6, 8, TRANSPARENT)
             self.obstacles_creation()
             self.obstacles_sup()
